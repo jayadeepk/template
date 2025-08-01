@@ -9,17 +9,13 @@ return {
       })
       
       -- Auto-open Claude Code on startup and focus it
-      vim.api.nvim_create_autocmd("VimEnter", {
+      vim.api.nvim_create_autocmd("UIEnter", {
         callback = function()
           vim.defer_fn(function()
             vim.cmd("ClaudeCode")
-            -- Focus the Claude Code panel after opening
-            vim.defer_fn(function()
-              vim.cmd("ClaudeCodeFocus")
-            end, 50)
-          end, 100)
+          end, 300)
         end,
-        desc = "Auto-open and focus Claude Code on startup",
+        desc = "Auto-open Claude Code on startup",
       })
     end,
     keys = {
