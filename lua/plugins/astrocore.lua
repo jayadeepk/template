@@ -43,6 +43,7 @@ return {
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        laststatus = 3, -- global statusline
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -94,6 +95,16 @@ return {
             end
           end,
           desc = "Auto-open Neo-tree on startup when no files specified",
+        },
+      },
+      -- Ensure global statusline is always visible
+      global_statusline = {
+        {
+          event = { "VimEnter", "WinEnter", "BufEnter" },
+          callback = function()
+            vim.opt.laststatus = 3
+          end,
+          desc = "Ensure global statusline is always visible",
         },
       },
     },
