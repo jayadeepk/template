@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
@@ -79,6 +77,24 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+      },
+    },
+    -- Configure autocommands
+    autocmds = {
+      -- Auto-open Neo-tree file explorer on startup
+      auto_neotree = {
+        {
+          event = "VimEnter",
+          callback = function()
+            -- Only open Neo-tree if no files were opened and we're not in a directory
+            if vim.fn.argc() == 0 and vim.fn.line2byte("$") == -1 then
+              vim.defer_fn(function()
+                vim.cmd("Neotree show")
+              end, 10)
+            end
+          end,
+          desc = "Auto-open Neo-tree on startup when no files specified",
+        },
       },
     },
   },
