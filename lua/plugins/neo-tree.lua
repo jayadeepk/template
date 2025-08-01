@@ -13,5 +13,8 @@ return {
     },
     -- Set git_status as the default source
     default_source = "git_status",
+    filesystem = {
+      use_libuv_file_watcher = true,  -- Watch .git folder for changes
+    },
   },
 }
