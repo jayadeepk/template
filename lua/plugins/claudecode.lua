@@ -2,9 +2,20 @@ return {
   {
     "cxwx/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
+    lazy = false,
     config = function()
       require("claudecode").setup({
         terminal_cmd = "claude --dangerously-skip-permissions",
+      })
+      
+      -- Auto-open Claude Code on startup
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          vim.defer_fn(function()
+            vim.cmd("ClaudeCode")
+          end, 100)
+        end,
+        desc = "Auto-open Claude Code on startup",
       })
     end,
     keys = {
