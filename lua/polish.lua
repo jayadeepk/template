@@ -4,3 +4,6 @@
 
 -- Load autocmds
 require("config.autocmds")
+
+-- Load custom mappings
+require("config.mappings")
