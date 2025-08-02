@@ -128,21 +128,21 @@ return {
     },
     -- Configure autocommands
     autocmds = {
-      -- Auto-open Neo-tree file explorer on startup
-      auto_neotree = {
-        {
-          event = "VimEnter",
-          callback = function()
-            -- Only open Neo-tree if no files were opened and we're not in a directory
-            if vim.fn.argc() == 0 and vim.fn.line2byte("$") == -1 then
-              vim.defer_fn(function()
-                vim.cmd("Neotree show")
-              end, 10)
-            end
-          end,
-          desc = "Auto-open Neo-tree on startup when no files specified",
-        },
-      },
+      -- Auto-open Neo-tree file explorer on startup - DISABLED
+      -- auto_neotree = {
+      --   {
+      --     event = "VimEnter",
+      --     callback = function()
+      --       -- Only open Neo-tree if no files were opened and we're not in a directory
+      --       if vim.fn.argc() == 0 and vim.fn.line2byte("$") == -1 then
+      --         vim.defer_fn(function()
+      --           vim.cmd("Neotree show")
+      --         end, 10)
+      --       end
+      --     end,
+      --     desc = "Auto-open Neo-tree on startup when no files specified",
+      --   },
+      -- },
       -- Ensure global statusline is always visible
       global_statusline = {
         {
