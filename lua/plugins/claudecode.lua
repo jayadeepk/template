@@ -8,6 +8,24 @@ return {
         terminal_cmd = "claude --dangerously-skip-permissions",
       })
       
+      -- Hide terminal title for Claude Code windows
+      vim.api.nvim_create_autocmd("TermOpen", {
+        pattern = "*claude*",
+        callback = function()
+          local buf = vim.api.nvim_get_current_buf()
+          -- Hide the terminal title/buffer name
+          vim.api.nvim_buf_set_option(buf, 'buflisted', false)
+          -- Set window options to hide title
+          local win = vim.api.nvim_get_current_win()
+          vim.api.nvim_win_set_option(win, 'number', false)
+          vim.api.nvim_win_set_option(win, 'relativenumber', false)
+          vim.api.nvim_win_set_option(win, 'signcolumn', 'no')
+          -- Hide the winbar/title if it exists
+          pcall(vim.api.nvim_win_set_option, win, 'winbar', '')
+        end,
+        desc = "Hide terminal title for Claude Code",
+      })
+      
       -- Auto-open Claude Code on startup and make it the only window
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
