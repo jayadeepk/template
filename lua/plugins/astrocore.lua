@@ -44,6 +44,11 @@ return {
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
         laststatus = 3, -- global statusline
+        -- Window management for 3-column layout
+        winminwidth = 10, -- absolute minimum window width  
+        equalalways = false, -- don't auto-equalize window sizes
+        splitright = true, -- split windows to the right
+        splitbelow = true, -- split windows below
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -78,6 +83,47 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+        
+        -- 3-column layout management
+        ["<Leader>wn"] = { 
+          function() 
+            -- Set current window to 15% width (Neo-tree size)
+            local total_width = vim.o.columns
+            local target_width = math.floor(total_width * 0.15)
+            vim.cmd("vertical resize " .. target_width)
+          end, 
+          desc = "Set window to 15% width (Neo-tree)" 
+        },
+        ["<Leader>wc"] = { 
+          function() 
+            -- Set current window to 35% width (Claude size)
+            local total_width = vim.o.columns
+            local target_width = math.floor(total_width * 0.35)
+            vim.cmd("vertical resize " .. target_width)
+          end, 
+          desc = "Set window to 35% width (Claude)" 
+        },
+        ["<Leader>wr"] = { 
+          function()
+            -- Reset all windows to proper proportions
+            local total_width = vim.o.columns
+            local neotree_width = math.floor(total_width * 0.15)
+            local claude_width = math.floor(total_width * 0.35)
+            
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              local bufname = vim.api.nvim_buf_get_name(buf)
+              local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+              
+              if ft == "neo-tree" then
+                vim.api.nvim_win_set_width(win, neotree_width)
+              elseif bufname:match("claude") then
+                vim.api.nvim_win_set_width(win, claude_width)
+              end
+            end
+          end, 
+          desc = "Reset windows to proper proportions (15%-50%-35%)" 
+        },
       },
     },
     -- Configure autocommands

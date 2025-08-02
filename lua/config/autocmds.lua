@@ -77,3 +77,57 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
     end
   end,
 })
+
+-- Window management for 3-column layout
+local window_group = vim.api.nvim_create_augroup("WindowManagement", { clear = true })
+
+-- Function to enforce specific widths for different windows
+local function enforce_window_widths()
+  local total_width = vim.o.columns
+  local neotree_width = math.floor(total_width * 0.15)  -- 15%
+  local claude_width = math.floor(total_width * 0.35)   -- 35%
+  
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local bufname = vim.api.nvim_buf_get_name(buf)
+    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+    
+    -- Enforce 15% width for Neo-tree
+    if ft == "neo-tree" then
+      vim.api.nvim_win_set_width(win, neotree_width)
+      vim.api.nvim_win_set_option(win, 'winfixwidth', true)
+    end
+    
+    -- Enforce 35% width for Claude terminal
+    if bufname:match("claude") then
+      vim.api.nvim_win_set_width(win, claude_width)
+      vim.api.nvim_win_set_option(win, 'winfixwidth', true)
+    end
+  end
+end
+
+-- Maintain window proportions on various events
+vim.api.nvim_create_autocmd({"WinResized", "VimResized", "WinClosed", "BufWinLeave"}, {
+  group = window_group,
+  callback = function()
+    vim.defer_fn(enforce_window_widths, 100)
+  end,
+  desc = "Maintain 30% window widths",
+})
+
+-- Set window options for consistent layout
+vim.api.nvim_create_autocmd({"WinEnter", "BufWinEnter"}, {
+  group = window_group,
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+    local bufname = vim.api.nvim_buf_get_name(buf)
+    
+    -- Set fixed width for Neo-tree and Claude windows
+    if ft == "neo-tree" or bufname:match("claude") then
+      vim.wo.winfixwidth = true
+      vim.defer_fn(enforce_window_widths, 50)
+    end
+  end,
+  desc = "Set window options for fixed layout",
+})
