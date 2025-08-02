@@ -31,14 +31,26 @@ return {
         callback = function()
           -- Only proceed if no files were opened
           if vim.fn.argc() == 0 then
+            -- Store initial buffer to delete immediately
+            local initial_buf = vim.api.nvim_get_current_buf()
+            
+            -- Delete the initial empty buffer immediately before opening Claude Code
+            if vim.api.nvim_buf_is_valid(initial_buf) then
+              local name = vim.api.nvim_buf_get_name(initial_buf)
+              local lines = vim.api.nvim_buf_get_lines(initial_buf, 0, -1, false)
+              if name == "" and #lines <= 1 and (lines[1] or "") == "" then
+                -- Create a temporary buffer to avoid "no buffers" error
+                local temp_buf = vim.api.nvim_create_buf(false, true)
+                vim.api.nvim_set_current_buf(temp_buf)
+                pcall(vim.api.nvim_buf_delete, initial_buf, { force = true })
+              end
+            end
+            
             vim.schedule(function()
-              -- Store initial buffer to delete later
-              local initial_buf = vim.api.nvim_get_current_buf()
-              
               -- Open Claude Code immediately
               vim.cmd("ClaudeCode")
               
-              -- Enhanced cleanup after Claude Code opens
+              -- Minimal cleanup after Claude Code opens
               vim.defer_fn(function()
                 local claude_win = nil
                 local claude_buf = nil
@@ -58,27 +70,25 @@ return {
                   -- Focus Claude Code window first
                   vim.api.nvim_set_current_win(claude_win)
                   
-                  -- Close any remaining non-Claude windows
+                  -- Close any remaining non-Claude windows and clean up buffers in one pass
                   for _, win in ipairs(vim.api.nvim_list_wins()) do
                     if win ~= claude_win then
                       pcall(vim.api.nvim_win_close, win, true)
                     end
                   end
                   
-                  -- Delete all empty/untitled buffers including the initial one
+                  -- Quick cleanup of any remaining unwanted buffers
                   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if buf ~= claude_buf and vim.api.nvim_buf_is_valid(buf) then
                       local name = vim.api.nvim_buf_get_name(buf)
                       local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-                      -- Delete empty buffers or the initial buffer
-                      if name == "" or buf == initial_buf or 
-                         (name:match("untitled") or (#lines <= 1 and (lines[1] or "") == "")) then
+                      if name == "" or name:match("untitled") or (#lines <= 1 and (lines[1] or "") == "") then
                         pcall(vim.api.nvim_buf_delete, buf, { force = true })
                       end
                     end
                   end
                 end
-              end, 100) -- Increased delay slightly to ensure Claude Code is fully loaded
+              end, 10) -- Reduced from 100ms to 10ms
             end)
           end
         end,
