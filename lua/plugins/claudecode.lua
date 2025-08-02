@@ -80,7 +80,7 @@ return {
                   vim.api.nvim_set_current_buf(fallback_buf)
                 end
               end)
-            end, 1200) -- Cleanup immediately after splash screen ends
+            end, 1000) -- Cleanup immediately after splash screen ends
           end
         end,
         desc = "Auto-open Claude Code on startup and hide empty buffer",
