@@ -79,8 +79,11 @@ local function create_splash_overlay()
     zindex = 1000, -- High z-index to ensure it's on top
   })
 
+  -- Create custom highlight group for splash text
+  vim.api.nvim_set_hl(0, "SplashText", { fg = "#49c2b8" }) -- Teal color
+  
   -- Set window options
-  vim.api.nvim_win_set_option(_G.splash_window, "winhl", "Normal:Normal")
+  vim.api.nvim_win_set_option(_G.splash_window, "winhl", "Normal:SplashText")
   vim.api.nvim_win_set_option(_G.splash_window, "cursorline", false)
   vim.api.nvim_win_set_option(_G.splash_window, "cursorcolumn", false)
 
