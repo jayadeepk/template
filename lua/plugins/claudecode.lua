@@ -5,8 +5,11 @@ return {
     lazy = false,
     config = function()
       require("claudecode").setup {
-        terminal_cmd = "claude --dangerously-skip-permissions",
+        terminal_cmd = "zsh -c 'source ~/.zshrc && nvm use 22 && claude --dangerously-skip-permissions'",
       }
+
+      -- Configure inline diff view for git diffs
+      vim.opt.diffopt = "internal,filler,closeoff,hiddenoff,foldcolumn:0,context:1,algorithm:patience,iwhite"
 
       -- Hide terminal title for Claude Code windows
       vim.api.nvim_create_autocmd("TermOpen", {
