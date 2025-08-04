@@ -7,3 +7,9 @@ require("config.autocmds")
 
 -- Load custom mappings
 require("config.mappings")
+
+-- Load test commands
+require("config.test-columns")
+
+-- Fix for number and sign columns
+require("config.column-fix")
