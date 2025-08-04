@@ -9,7 +9,7 @@ return {
       }
 
       -- Configure inline diff view for git diffs
-      vim.opt.diffopt = "internal,filler,closeoff,hiddenoff,foldcolumn:0,context:1,algorithm:patience,iwhite"
+      vim.opt.diffopt = "internal,filler,closeoff,hiddenoff,foldcolumn:0,context:99999,algorithm:patience,iwhite,linematch:60"
 
       -- Hide terminal title for Claude Code windows
       vim.api.nvim_create_autocmd("TermOpen", {
