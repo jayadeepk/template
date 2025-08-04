@@ -16,6 +16,7 @@ return {
       },
       mappings = {
         ["<space>"] = "none",
+        ["<C-b>"] = "close_window",
       },
     },
     source_selector = {
