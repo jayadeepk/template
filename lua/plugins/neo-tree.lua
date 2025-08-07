@@ -32,6 +32,12 @@ return {
     default_source = "git_status",
     filesystem = {
       use_libuv_file_watcher = true,
+      filtered_items = {
+        visible = true, -- Show hidden files
+        hide_dotfiles = false,
+        hide_gitignored = false,
+        hide_hidden = false, -- only works on Windows for hidden files/directories
+      },
     },
     git_status = {
       use_libuv_file_watcher = true,  -- Enable file watcher for git_status source
