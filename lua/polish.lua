@@ -41,3 +41,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
   callback = update_theme_from_windows,
   desc = "Update theme when Neovim gains focus"
 })
+
+-- Setup Claude Code theme synchronization
+require("sync_claude_theme").setup_auto_sync()
