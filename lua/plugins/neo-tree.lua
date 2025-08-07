@@ -17,6 +17,8 @@ return {
       mappings = {
         ["<space>"] = "none",
         ["<C-b>"] = "close_window",
+        ["gt"] = "next_source",
+        ["gT"] = "prev_source",
       },
     },
     source_selector = {
