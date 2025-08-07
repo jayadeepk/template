@@ -25,6 +25,28 @@ return {
           vim.api.nvim_win_set_option(win, "signcolumn", "no")
           -- Hide the winbar/title if it exists
           pcall(vim.api.nvim_win_set_option, win, "winbar", "")
+          
+          -- Force white background for Claude Code terminal and all UI elements
+          vim.api.nvim_win_set_option(win, "winhighlight", "Normal:ClaudeCodeTerminal,NormalNC:ClaudeCodeTerminal,WinSeparator:ClaudeCodeSeparator,StatusLine:ClaudeCodeStatus,StatusLineNC:ClaudeCodeStatus,WinBar:ClaudeCodeBar,WinBarNC:ClaudeCodeBar,EndOfBuffer:ClaudeCodeTerminal,TabLine:ClaudeCodeTab,TabLineFill:ClaudeCodeTab")
+          
+          -- Define the highlight groups with white background
+          vim.api.nvim_set_hl(0, "ClaudeCodeTerminal", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "ClaudeCodeSeparator", { bg = "#FFFFFF", fg = "#FFFFFF" })
+          vim.api.nvim_set_hl(0, "ClaudeCodeStatus", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "ClaudeCodeBar", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "ClaudeCodeTab", { bg = "#FFFFFF", fg = "#000000" })
+          
+          -- Also override global tabline highlights when Claude is open
+          vim.api.nvim_set_hl(0, "TabLine", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#FFFFFF", fg = "#000000" })
+          
+          -- Try to hide the winbar completely
+          vim.api.nvim_win_set_option(win, "winbar", "")
+          vim.wo[win].winbar = ""
+          
+          -- Set fillchars to use spaces for separators
+          vim.opt_local.fillchars = "horiz: ,horizup: ,horizdown: ,vert: ,vertleft: ,vertright: ,verthoriz: "
         end,
         desc = "Hide terminal title for Claude Code",
       })

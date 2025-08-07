@@ -34,6 +34,30 @@ return {
       astrodark = { -- a table of overrides/changes when applying the astrotheme theme
         -- Normal = { bg = "#000000" },
       },
+      astrolight = { -- overrides for the light theme
+        -- Force terminal to use white background in light mode
+        Terminal = { bg = "#FFFFFF", fg = "#000000" },
+        TerminalNormal = { bg = "#FFFFFF", fg = "#000000" },
+        TerminalNC = { bg = "#FFFFFF", fg = "#000000" },
+        -- Force tabline/bufferline to use white background
+        TabLine = { bg = "#FFFFFF", fg = "#000000" },
+        TabLineFill = { bg = "#FFFFFF" },
+        TabLineSel = { bg = "#FFFFFF", fg = "#000000", bold = true },
+        BufferLine = { bg = "#FFFFFF" },
+        BufferLineFill = { bg = "#FFFFFF" },
+        BufferLineTab = { bg = "#FFFFFF", fg = "#000000" },
+        BufferLineTabSelected = { bg = "#FFFFFF", fg = "#000000", bold = true },
+        BufferLineBackground = { bg = "#FFFFFF" },
+        BufferLineBufferSelected = { bg = "#FFFFFF", fg = "#000000", bold = true },
+        BufferLineBufferVisible = { bg = "#FFFFFF", fg = "#000000" },
+        -- Heirline specific highlights
+        HeirlineNormal = { bg = "#FFFFFF" },
+        HeirlineInsert = { bg = "#FFFFFF" },
+        HeirlineVisual = { bg = "#FFFFFF" },
+        HeirlineReplace = { bg = "#FFFFFF" },
+        HeirlineCommand = { bg = "#FFFFFF" },
+        HeirlineInactive = { bg = "#FFFFFF" },
+      },
     },
     -- Icons can be configured throughout the interface
     icons = {
