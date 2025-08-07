@@ -33,6 +33,10 @@ return {
       },
       astrodark = { -- a table of overrides/changes when applying the astrotheme theme
         -- Normal = { bg = "#000000" },
+        -- Ensure dark theme tabline uses dark colors
+        TabLine = { bg = "#1e222a", fg = "#abb2bf" },
+        TabLineFill = { bg = "#1e222a" },
+        TabLineSel = { bg = "#282c34", fg = "#abb2bf", bold = true },
       },
       astrolight = { -- overrides for the light theme
         -- Force terminal to use white background in light mode

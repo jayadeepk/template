@@ -26,20 +26,26 @@ return {
           -- Hide the winbar/title if it exists
           pcall(vim.api.nvim_win_set_option, win, "winbar", "")
           
-          -- Force white background for Claude Code terminal and all UI elements
+          -- Detect current colorscheme and set appropriate colors
+          local colorscheme = vim.g.colors_name or ""
+          local is_light = colorscheme:match("light") ~= nil
+          local bg_color = is_light and "#FFFFFF" or "#1e222a"  -- White for light, dark for astrodark
+          local fg_color = is_light and "#000000" or "#abb2bf"  -- Black for light, light gray for dark
+          
+          -- Force appropriate background for Claude Code terminal and all UI elements
           vim.api.nvim_win_set_option(win, "winhighlight", "Normal:ClaudeCodeTerminal,NormalNC:ClaudeCodeTerminal,WinSeparator:ClaudeCodeSeparator,StatusLine:ClaudeCodeStatus,StatusLineNC:ClaudeCodeStatus,WinBar:ClaudeCodeBar,WinBarNC:ClaudeCodeBar,EndOfBuffer:ClaudeCodeTerminal,TabLine:ClaudeCodeTab,TabLineFill:ClaudeCodeTab")
           
-          -- Define the highlight groups with white background
-          vim.api.nvim_set_hl(0, "ClaudeCodeTerminal", { bg = "#FFFFFF", fg = "#000000" })
-          vim.api.nvim_set_hl(0, "ClaudeCodeSeparator", { bg = "#FFFFFF", fg = "#FFFFFF" })
-          vim.api.nvim_set_hl(0, "ClaudeCodeStatus", { bg = "#FFFFFF", fg = "#000000" })
-          vim.api.nvim_set_hl(0, "ClaudeCodeBar", { bg = "#FFFFFF", fg = "#000000" })
-          vim.api.nvim_set_hl(0, "ClaudeCodeTab", { bg = "#FFFFFF", fg = "#000000" })
+          -- Define the highlight groups with theme-appropriate background
+          vim.api.nvim_set_hl(0, "ClaudeCodeTerminal", { bg = bg_color, fg = fg_color })
+          vim.api.nvim_set_hl(0, "ClaudeCodeSeparator", { bg = bg_color, fg = bg_color })
+          vim.api.nvim_set_hl(0, "ClaudeCodeStatus", { bg = bg_color, fg = fg_color })
+          vim.api.nvim_set_hl(0, "ClaudeCodeBar", { bg = bg_color, fg = fg_color })
+          vim.api.nvim_set_hl(0, "ClaudeCodeTab", { bg = bg_color, fg = fg_color })
           
           -- Also override global tabline highlights when Claude is open
-          vim.api.nvim_set_hl(0, "TabLine", { bg = "#FFFFFF", fg = "#000000" })
-          vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#FFFFFF", fg = "#000000" })
-          vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#FFFFFF", fg = "#000000" })
+          vim.api.nvim_set_hl(0, "TabLine", { bg = bg_color, fg = fg_color })
+          vim.api.nvim_set_hl(0, "TabLineFill", { bg = bg_color, fg = fg_color })
+          vim.api.nvim_set_hl(0, "TabLineSel", { bg = bg_color, fg = fg_color })
           
           -- Try to hide the winbar completely
           vim.api.nvim_win_set_option(win, "winbar", "")
