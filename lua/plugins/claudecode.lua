@@ -25,6 +25,7 @@ return {
           vim.api.nvim_win_set_option(win, "signcolumn", "no")
           -- Hide the winbar/title if it exists
           pcall(vim.api.nvim_win_set_option, win, "winbar", "")
+          vim.wo[win].winbar = nil
           
           -- Detect current colorscheme and set appropriate colors
           local colorscheme = vim.g.colors_name or ""
@@ -49,12 +50,30 @@ return {
           
           -- Try to hide the winbar completely
           vim.api.nvim_win_set_option(win, "winbar", "")
-          vim.wo[win].winbar = ""
+          vim.wo[win].winbar = nil
           
           -- Set fillchars to use spaces for separators
           vim.opt_local.fillchars = "horiz: ,horizup: ,horizdown: ,vert: ,vertleft: ,vertright: ,verthoriz: "
         end,
         desc = "Hide terminal title for Claude Code",
+      })
+      
+      -- Continuously ensure winbar stays hidden for Claude Code
+      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "BufWinEnter" }, {
+        pattern = "*",
+        callback = function()
+          local buf = vim.api.nvim_get_current_buf()
+          local bufname = vim.api.nvim_buf_get_name(buf)
+          if bufname:match("claude") then
+            local win = vim.api.nvim_get_current_win()
+            -- Force winbar to be empty
+            pcall(vim.api.nvim_win_set_option, win, "winbar", "")
+            vim.wo[win].winbar = nil
+            -- Also try setting it as a buffer-local option
+            vim.opt_local.winbar = nil
+          end
+        end,
+        desc = "Continuously hide winbar for Claude Code",
       })
 
       -- Auto-open Claude Code on startup and make it the only window
