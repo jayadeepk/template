@@ -86,6 +86,19 @@ return {
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
         
+        -- Smart quit: close buffer instead of quitting when multiple buffers exist
+        ["<Leader>q"] = {
+          function()
+            local bufs = vim.fn.getbufinfo { buflisted = true }
+            if #bufs > 1 then
+              require("astrocore.buffer").close(0)
+            else
+              vim.cmd "quit"
+            end
+          end,
+          desc = "Smart quit (close buffer or quit)",
+        },
+        
         -- 3-column layout management
         ["<Leader>wn"] = { 
           function() 
@@ -128,8 +141,33 @@ return {
         },
       },
     },
+    -- Configure commands
+    commands = {
+      SmartQuit = {
+        function()
+          local bufs = vim.fn.getbufinfo { buflisted = true }
+          if #bufs > 1 then
+            require("astrocore.buffer").close(0)
+          else
+            vim.cmd "quit"
+          end
+        end,
+        desc = "Smart quit - close buffer if multiple buffers exist, otherwise quit",
+      },
+    },
     -- Configure autocommands
     autocmds = {
+      -- Set up command abbreviation for smart quit
+      smart_quit_abbrev = {
+        {
+          event = "VimEnter",
+          callback = function()
+            vim.cmd.cabbrev("q SmartQuit")
+            vim.cmd.cabbrev("Q SmartQuit")
+          end,
+          desc = "Remap :q to SmartQuit command",
+        },
+      },
       -- Auto-open Neo-tree file explorer on startup - DISABLED
       -- auto_neotree = {
       --   {
